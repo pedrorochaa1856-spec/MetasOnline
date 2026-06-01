@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minhas Metas</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#121212;
+    color:white;
+    display:flex;
+    justify-content:center;
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:500px;
+}
+
+h1{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.input-area{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+input{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    outline:none;
+}
+
+button{
+    border:none;
+    border-radius:10px;
+    padding:12px 15px;
+    cursor:pointer;
+    background:#00c853;
+    color:white;
+    font-weight:bold;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+.meta{
+    background:#1e1e1e;
+    padding:12px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+.meta span{
+    flex:1;
+}
+
+.concluida{
+    text-decoration:line-through;
+    opacity:0.6;
+}
+
+.delete{
+    background:#ff1744;
+}
+
+.progress-box{
+    margin-bottom:20px;
+}
+
+.progress{
+    height:20px;
+    background:#333;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:#00e676;
+    transition:0.3s;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🎯 Minhas Metas</h1>
+
+    <div class="input-area">
+        <input type="text" id="metaInput" placeholder="Digite uma meta...">
+        <button onclick="adicionarMeta()">+</button>
+    </div>
+
+    <div class="progress-box">
+        <p id="progressoTexto">0% concluído</p>
+        <div class="progress">
+            <div class="progress-bar" id="barra"></div>
+        </div>
+    </div>
+
+    <div id="lista"></div>
+</div>
+
+<script>
+let metas = JSON.parse(localStorage.getItem("metas")) || [];
+
+function salvar(){
+    localStorage.setItem("metas", JSON.stringify(metas));
+}
+
+function atualizarProgresso(){
+    let total = metas.length;
+
+    if(total === 0){
+        document.getElementById("barra").style.width = "0%";
+        document.getElementById("progressoTexto").innerText = "0% concluído";
+        return;
+    }
+
+    let concluidas = metas.filter(m => m.feita).length;
+    let porcentagem = Math.round((concluidas/total)*100);
+
+    document.getElementById("barra").style.width = porcentagem + "%";
+    document.getElementById("progressoTexto").innerText =
+        porcentagem + "% concluído";
+}
+
+function renderizar(){
+    const lista = document.getElementById("lista");
+    lista.innerHTML = "";
+
+    metas.forEach((meta,index)=>{
+
+        const div = document.createElement("div");
+        div.className = "meta";
+
+        div.innerHTML = `
+            <input type="checkbox"
+            ${meta.feita ? "checked" : ""}
+            onchange="alternar(${index})">
+
+            <span class="${meta.feita ? "concluida" : ""}">
+            ${meta.texto}
+            </span>
+
+            <button class="delete"
+            onclick="remover(${index})">
+            X
+            </button>
+        `;
+
+        lista.appendChild(div);
+    });
+
+    atualizarProgresso();
+    salvar();
+}
+
+function adicionarMeta(){
+    const input = document.getElementById("metaInput");
+
+    if(input.value.trim() === "") return;
+
+    metas.push({
+        texto: input.value,
+        feita: false
+    });
+
+    input.value = "";
+    renderizar();
+}
+
+function alternar(index){
+    metas[index].feita = !metas[index].feita;
+    renderizar();
+}
+
+function remover(index){
+    metas.splice(index,1);
+    renderizar();
+}
+
+renderizar();
+
+document.getElementById("metaInput")
+.addEventListener("keypress", function(e){
+    if(e.key === "Enter"){
+        adicionarMeta();
+    }
+});
+</script>
+
+</body>
+</html>
