@@ -3,212 +3,229 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Minhas Metas</title>
+<title>Metas Online</title>
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
-}
+<link rel="stylesheet" href="style.css">
 
-body{
-    background:#121212;
-    color:white;
-    display:flex;
-    justify-content:center;
-    padding:20px;
-}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-.container{
-    width:100%;
-    max-width:500px;
-}
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-h1{
-    text-align:center;
-    margin-bottom:20px;
-}
+<script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
 
-.input-area{
-    display:flex;
-    gap:10px;
-    margin-bottom:20px;
-}
-
-input{
-    flex:1;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    outline:none;
-}
-
-button{
-    border:none;
-    border-radius:10px;
-    padding:12px 15px;
-    cursor:pointer;
-    background:#00c853;
-    color:white;
-    font-weight:bold;
-}
-
-button:hover{
-    opacity:0.9;
-}
-
-.meta{
-    background:#1e1e1e;
-    padding:12px;
-    border-radius:10px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:10px;
-}
-
-.meta span{
-    flex:1;
-}
-
-.concluida{
-    text-decoration:line-through;
-    opacity:0.6;
-}
-
-.delete{
-    background:#ff1744;
-}
-
-.progress-box{
-    margin-bottom:20px;
-}
-
-.progress{
-    height:20px;
-    background:#333;
-    border-radius:20px;
-    overflow:hidden;
-}
-
-.progress-bar{
-    height:100%;
-    width:0%;
-    background:#00e676;
-    transition:0.3s;
-}
-</style>
 </head>
 <body>
 
-<div class="container">
-    <h1>🎯 Minhas Metas</h1>
+<div id="tsparticles"></div>
 
-    <div class="input-area">
-        <input type="text" id="metaInput" placeholder="Digite uma meta...">
-        <button onclick="adicionarMeta()">+</button>
+<div id="login-screen">
+
+    <div class="login-card">
+
+        <h1>🚀 Metas Online</h1>
+
+        <p>
+            Transforme objetivos em conquistas.
+        </p>
+
+        <button id="googleLogin">
+            Entrar com Google
+        </button>
+
     </div>
 
-    <div class="progress-box">
-        <p id="progressoTexto">0% concluído</p>
-        <div class="progress">
-            <div class="progress-bar" id="barra"></div>
-        </div>
-    </div>
-
-    <div id="lista"></div>
 </div>
 
-<script>
-let metas = JSON.parse(localStorage.getItem("metas")) || [];
+<div id="app" class="hidden">
 
-function salvar(){
-    localStorage.setItem("metas", JSON.stringify(metas));
+<header>
+
+    <div class="user-area">
+
+        <img id="userPhoto">
+
+        <div>
+            <h2 id="userName"></h2>
+            <p id="levelText">
+                Nível 1
+            </p>
+        </div>
+
+    </div>
+
+    <button id="logoutBtn">
+        Sair
+    </button>
+
+</header>
+
+<section class="hero">
+
+    <h1>
+        🎯 Metas Online
+    </h1>
+
+    <p id="motivation">
+        Cada meta concluída aproxima você da sua melhor versão.
+    </p>
+
+</section>
+
+<section class="xp-section">
+
+    <div class="xp-header">
+
+        <span>XP</span>
+
+        <span id="xpText">
+            0 / 100
+        </span>
+
+    </div>
+
+    <div class="xp-bar">
+
+        <div id="xpFill"></div>
+
+    </div>
+
+</section>
+
+<section class="stats-grid">
+
+    <div class="stat-card">
+        <h3 id="totalTasks">0</h3>
+        <span>Metas</span>
+    </div>
+
+    <div class="stat-card">
+        <h3 id="completedTasks">0</h3>
+        <span>Concluídas</span>
+    </div>
+
+    <div class="stat-card">
+        <h3 id="streakCount">0</h3>
+        <span>Streak 🔥</span>
+    </div>
+
+</section>
+
+<section class="task-section">
+
+    <div class="task-input">
+
+        <input
+        id="taskInput"
+        placeholder="Digite uma meta...">
+
+        <button id="addTask">
+            +
+        </button>
+
+    </div>
+
+    <div id="tasksContainer">
+
+    </div>
+
+</section>
+
+<section class="calendar-section">
+
+    <h2>📅 Calendário</h2>
+
+    <input
+    type="date"
+    id="goalDate">
+
+</section>
+
+<section class="achievements">
+
+    <h2>🏆 Conquistas</h2>
+
+    <div id="badges">
+
+        <div class="badge">
+            🌱 Iniciante
+        </div>
+
+        <div class="badge">
+            ⚡ Produtivo
+        </div>
+
+        <div class="badge">
+            👑 Mestre
+        </div>
+
+    </div>
+
+</section>
+
+</div>
+
+<script type="module">
+
+import {
+initializeApp
 }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-function atualizarProgresso(){
-    let total = metas.length;
-
-    if(total === 0){
-        document.getElementById("barra").style.width = "0%";
-        document.getElementById("progressoTexto").innerText = "0% concluído";
-        return;
-    }
-
-    let concluidas = metas.filter(m => m.feita).length;
-    let porcentagem = Math.round((concluidas/total)*100);
-
-    document.getElementById("barra").style.width = porcentagem + "%";
-    document.getElementById("progressoTexto").innerText =
-        porcentagem + "% concluído";
+import {
+getAuth,
+GoogleAuthProvider,
+signInWithPopup,
+signOut,
+onAuthStateChanged
 }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-function renderizar(){
-    const lista = document.getElementById("lista");
-    lista.innerHTML = "";
-
-    metas.forEach((meta,index)=>{
-
-        const div = document.createElement("div");
-        div.className = "meta";
-
-        div.innerHTML = `
-            <input type="checkbox"
-            ${meta.feita ? "checked" : ""}
-            onchange="alternar(${index})">
-
-            <span class="${meta.feita ? "concluida" : ""}">
-            ${meta.texto}
-            </span>
-
-            <button class="delete"
-            onclick="remover(${index})">
-            X
-            </button>
-        `;
-
-        lista.appendChild(div);
-    });
-
-    atualizarProgresso();
-    salvar();
+import {
+getFirestore
 }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-function adicionarMeta(){
-    const input = document.getElementById("metaInput");
+window.firebaseConfig = {
+apiKey: "AIzaSyCybN5klIKljbm7iLLpKuqRDYMf6F9xN5c",
+authDomain: "metasonline-494be.firebaseapp.com",
+projectId: "metasonline-494be",
+storageBucket: "metasonline-494be.firebasestorage.app",
+messagingSenderId: "38816047946",
+appId: "1:38816047946:web:ff801af88f676d2ba797b3",
+measurementId: "G-KNS9V9PGNJ"
+};
 
-    if(input.value.trim() === "") return;
+window.firebaseApp =
+initializeApp(
+window.firebaseConfig
+);
 
-    metas.push({
-        texto: input.value,
-        feita: false
-    });
+window.auth =
+getAuth(
+window.firebaseApp
+);
 
-    input.value = "";
-    renderizar();
-}
+window.db =
+getFirestore(
+window.firebaseApp
+);
 
-function alternar(index){
-    metas[index].feita = !metas[index].feita;
-    renderizar();
-}
+window.provider =
+new GoogleAuthProvider();
 
-function remover(index){
-    metas.splice(index,1);
-    renderizar();
-}
+window.signInWithPopup =
+signInWithPopup;
 
-renderizar();
+window.signOut =
+signOut;
 
-document.getElementById("metaInput")
-.addEventListener("keypress", function(e){
-    if(e.key === "Enter"){
-        adicionarMeta();
-    }
-});
+window.onAuthStateChanged =
+onAuthStateChanged;
+
 </script>
+
+<script src="app.js"></script>
 
 </body>
 </html>
