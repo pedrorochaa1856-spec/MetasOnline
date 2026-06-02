@@ -1,229 +1,246 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Metas Online</title>
 
-<link rel="stylesheet" href="style.css">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>
+Metas Online
+</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet"
+href="style.css">
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
 
 </head>
+
 <body>
 
-<div id="tsparticles"></div>
+<div id="particles"></div>
 
-<div id="login-screen">
+<div id="loginPage">
 
-    <div class="login-card">
+<div class="loginCard">
 
-        <h1>🚀 Metas Online</h1>
+<h1>
+METAS ONLINE
+</h1>
 
-        <p>
-            Transforme objetivos em conquistas.
-        </p>
+<p>
 
-        <button id="googleLogin">
-            Entrar com Google
-        </button>
+Transforme disciplina em resultados.
 
-    </div>
+</p>
+
+<button id="guestBtn">
+
+Entrar como Visitante
+
+</button>
+
+<button id="googleBtn">
+
+Entrar com Google
+
+</button>
 
 </div>
 
-<div id="app" class="hidden">
+</div>
+
+<div id="app"
+class="hidden">
 
 <header>
 
-    <div class="user-area">
+<h1>
 
-        <img id="userPhoto">
+METAS ONLINE
 
-        <div>
-            <h2 id="userName"></h2>
-            <p id="levelText">
-                Nível 1
-            </p>
-        </div>
+</h1>
 
-    </div>
+<div id="profile">
 
-    <button id="logoutBtn">
-        Sair
-    </button>
+<img
+id="profilePhoto">
+
+<div>
+
+<h3 id="profileName">
+
+Visitante
+
+</h3>
+
+<p id="levelText">
+
+Nível 1
+
+</p>
+
+</div>
+
+</div>
 
 </header>
 
-<section class="hero">
+<section class="dashboard">
 
-    <h1>
-        🎯 Metas Online
-    </h1>
+<div class="card">
 
-    <p id="motivation">
-        Cada meta concluída aproxima você da sua melhor versão.
-    </p>
+<h3>XP</h3>
 
-</section>
+<div class="xpBar">
 
-<section class="xp-section">
+<div id="xpFill"></div>
 
-    <div class="xp-header">
+</div>
 
-        <span>XP</span>
+<p id="xpText">
 
-        <span id="xpText">
-            0 / 100
-        </span>
+0 / 100
 
-    </div>
+</p>
 
-    <div class="xp-bar">
+</div>
 
-        <div id="xpFill"></div>
+<div class="card">
 
-    </div>
+<h3>Streak 🔥</h3>
 
-</section>
+<h2 id="streak">
 
-<section class="stats-grid">
+0
 
-    <div class="stat-card">
-        <h3 id="totalTasks">0</h3>
-        <span>Metas</span>
-    </div>
+</h2>
 
-    <div class="stat-card">
-        <h3 id="completedTasks">0</h3>
-        <span>Concluídas</span>
-    </div>
+</div>
 
-    <div class="stat-card">
-        <h3 id="streakCount">0</h3>
-        <span>Streak 🔥</span>
-    </div>
+<div class="card">
+
+<h3>Metas</h3>
+
+<h2 id="taskCount">
+
+0
+
+</h2>
+
+</div>
 
 </section>
 
-<section class="task-section">
+<section class="newTask">
 
-    <div class="task-input">
+<h2>
 
-        <input
-        id="taskInput"
-        placeholder="Digite uma meta...">
+Nova Meta
 
-        <button id="addTask">
-            +
-        </button>
+</h2>
 
-    </div>
+<input
+id="taskTitle"
+placeholder="Digite sua meta">
 
-    <div id="tasksContainer">
+<select
+id="taskCategory">
 
-    </div>
+<option>
+Estudo
+</option>
+
+<option>
+Academia
+</option>
+
+<option>
+Trabalho
+</option>
+
+<option>
+Pessoal
+</option>
+
+</select>
+
+<select
+id="taskPriority">
+
+<option>
+Baixa
+</option>
+
+<option>
+Média
+</option>
+
+<option>
+Alta
+</option>
+
+</select>
+
+<input
+type="date"
+id="taskDate">
+
+<button
+id="addTask">
+
+Adicionar
+
+</button>
 
 </section>
 
-<section class="calendar-section">
+<section>
 
-    <h2>📅 Calendário</h2>
+<h2>
 
-    <input
-    type="date"
-    id="goalDate">
+Metas
+
+</h2>
+
+<div id="taskList">
+
+</div>
 
 </section>
 
-<section class="achievements">
+<section>
 
-    <h2>🏆 Conquistas</h2>
+<h2>
 
-    <div id="badges">
+Conquistas
 
-        <div class="badge">
-            🌱 Iniciante
-        </div>
+</h2>
 
-        <div class="badge">
-            ⚡ Produtivo
-        </div>
+<div id="badges">
 
-        <div class="badge">
-            👑 Mestre
-        </div>
+<div class="badge">
+🌱 Iniciante
+</div>
 
-    </div>
+</div>
 
 </section>
 
 </div>
-
-<script type="module">
-
-import {
-initializeApp
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-getAuth,
-GoogleAuthProvider,
-signInWithPopup,
-signOut,
-onAuthStateChanged
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-import {
-getFirestore
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-window.firebaseConfig = {
-apiKey: "AIzaSyCybN5klIKljbm7iLLpKuqRDYMf6F9xN5c",
-authDomain: "metasonline-494be.firebaseapp.com",
-projectId: "metasonline-494be",
-storageBucket: "metasonline-494be.firebasestorage.app",
-messagingSenderId: "38816047946",
-appId: "1:38816047946:web:ff801af88f676d2ba797b3",
-measurementId: "G-KNS9V9PGNJ"
-};
-
-window.firebaseApp =
-initializeApp(
-window.firebaseConfig
-);
-
-window.auth =
-getAuth(
-window.firebaseApp
-);
-
-window.db =
-getFirestore(
-window.firebaseApp
-);
-
-window.provider =
-new GoogleAuthProvider();
-
-window.signInWithPopup =
-signInWithPopup;
-
-window.signOut =
-signOut;
-
-window.onAuthStateChanged =
-onAuthStateChanged;
-
-</script>
 
 <script src="app.js"></script>
 
